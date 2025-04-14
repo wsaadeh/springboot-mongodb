@@ -1,6 +1,7 @@
 package com.saadeh.springbootmongodb.services;
 
 import com.saadeh.springbootmongodb.domain.User;
+import com.saadeh.springbootmongodb.dto.UserDto;
 import com.saadeh.springbootmongodb.repository.UserRepository;
 import com.saadeh.springbootmongodb.services.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,5 +23,13 @@ public class UserService {
     public User findById(String id){
         Optional<User> user = repo.findById(id);
         return user.orElseThrow(()-> new ObjectNotFoundException("Object not found!"));
+    }
+
+    public User insert(User obj){
+        return repo.insert(obj);
+    }
+
+    public User fromDto(UserDto objDto){
+        return new User(objDto.getId(), objDto.getName(), objDto.getEmail());
     }
 }
