@@ -3,10 +3,12 @@ package com.saadeh.springbootmongodb.config;
 import com.saadeh.springbootmongodb.domain.Post;
 import com.saadeh.springbootmongodb.domain.User;
 import com.saadeh.springbootmongodb.dto.AuthorDto;
+import com.saadeh.springbootmongodb.dto.CommentDto;
 import com.saadeh.springbootmongodb.repository.PostRepository;
 import com.saadeh.springbootmongodb.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.cglib.core.Local;
 import org.springframework.context.annotation.Configuration;
 
 import java.time.LocalDate;
@@ -39,6 +41,13 @@ public class Instatiation implements CommandLineRunner {
 
         Post post1 = new Post(null, LocalDate.parse("21/03/2018",fmt),"Partiu viagem","Vou viajar para São Paulo.Abraços!",new AuthorDto(maria));
         Post post2 = new Post(null,LocalDate.parse("23/03/2018",fmt),"Bom dia","Acordei feliz hoje!",new AuthorDto(maria));
+
+        CommentDto c1 = new CommentDto("Boa viagem mano.",LocalDate.parse("21/03/2018",fmt),new AuthorDto(alex));
+        CommentDto c2 = new CommentDto("Aproveite", LocalDate.parse("22/03/2018",fmt),new AuthorDto(bob));
+        CommentDto c3 = new CommentDto("Tenha um ótimo dia!", LocalDate.parse("23/03/2018",fmt),new AuthorDto(alex));
+
+        post1.getComments().addAll(Arrays.asList(c1,c2));
+        post2.getComments().add(c3);
 
         postRepository.saveAll(Arrays.asList(post1, post2));
 
