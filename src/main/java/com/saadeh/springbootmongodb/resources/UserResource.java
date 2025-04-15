@@ -1,5 +1,6 @@
 package com.saadeh.springbootmongodb.resources;
 
+import com.saadeh.springbootmongodb.domain.Post;
 import com.saadeh.springbootmongodb.domain.User;
 import com.saadeh.springbootmongodb.dto.UserDto;
 import com.saadeh.springbootmongodb.services.UserService;
@@ -9,8 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,14 +21,14 @@ public class UserResource {
     private UserService service;
 
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<List<UserDto>> finAll(){
+    public ResponseEntity<List<UserDto>> findAll(){
        List<User> u = service.findAll();
        List<UserDto> listDto = u.stream().map(x -> new UserDto(x)).collect(Collectors.toList());
        return ResponseEntity.ok().body(listDto);
     }
 
     @RequestMapping(value="/{id}", method = RequestMethod.GET)
-    public ResponseEntity<UserDto> finById(@PathVariable String id){
+    public ResponseEntity<UserDto> findById(@PathVariable String id){
         User u = service.findById(id);
         return ResponseEntity.ok().body(new UserDto(u));
     }
@@ -55,4 +54,12 @@ public class UserResource {
         obj = service.update(obj);
         return ResponseEntity.noContent().build();
     }
+
+    @RequestMapping(value="/{id}/posts", method = RequestMethod.GET)
+    public ResponseEntity<List<Post>> findPosts(@PathVariable String id){
+        User u = service.findById(id);
+        return ResponseEntity.ok().body(u.getPosts());
+    }
+
+
 }
